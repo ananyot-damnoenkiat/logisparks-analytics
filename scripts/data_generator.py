@@ -1,33 +1,39 @@
 import json
 import random
-import time
+import os
 from faker import Faker
 from datetime import datetime
 
+# Initialize Faker
 fake = Faker()
 
-def generate_shipment_data(num_records):
+def generate_logistics_data(num_records=1000, output_path='/opt/airflow/data/raw_data.json'):
+    """
+    Generates synthetic logistics data and saves it as JSON.
+    """
     data = []
+    print(f"Generating {num_records} records...")
+    
     for _ in range(num_records):
         record = {
-            "shipment_id": fake.uuid4(),
+            "transaction_id": fake.uuid4(),
+            "date": datetime.now().strftime("%Y-%m-%d"),
             "origin": fake.city(),
             "destination": fake.city(),
-            "weight_kg": round(random.uniform(1.0, 100.0), 2),
-            "timestamp": datetime.now().isoformat(),
-            "status": random.choice(["SHIPPED", "IN_TRANSIT", "DELIVERED", "DELAYED"]),
-            "shipping_cost": round(random.uniform(10.0, 500.0), 2) 
+            "weight_kg": round(random.uniform(5.0, 500.0), 2),
+            "cost_usd": round(random.uniform(50.0, 2000.0), 2),
+            "priority": random.choice(["Standard", "Express", "Same-Day"])
         }
         data.append(record)
-    return data
+    
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    # Write to file
+    with open(output_path, 'w') as f:
+        json.dump(data, f)
+    
+    print(f"Data successfully saved to {output_path}")
 
 if __name__ == "__main__":
-    # Generate 1000 records
-    shipments = generate_shipment_data(1000)
-
-    # Save to local JSON file
-    filename = f"shipments_{int(time.time())}.json"
-    with open(filename, "w") as f:
-        json.dump(shipments, f)
-
-    print(f"Generated {filename}")
+    generate_logistics_data()
