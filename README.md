@@ -1,4 +1,4 @@
-# LogiSaprk: End-to-End Logistics Analytics Pipeline 🚚
+# LogiSpark: End-to-End Logistics Analytics Pipeline 🚚
 
 ![Python](https://img.shields.io/badge/Python-3.9-green)
 ![Apache Spark](https://img.shields.io/badge/Apache%20Spark-3.4-orange)
